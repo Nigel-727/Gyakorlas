@@ -1,0 +1,44 @@
+OFF:
+KiadószobaKereső.java
+
+
+hol: Budapest
+
+kláBkoZnt a
+
+k = 107 // 4 -> 70
+l = 108 // 7 -> 81
+á = 225 // 9 -> 85
+B = 66 // 1 -> 43
+k = 107 // 3 -> 65
+o = 111 // 6 -> 70.9
+Z = 90 // 5 -> 70.7
+n = 110 // 10 -> 89
+t = 116 // 8 -> 83.5
+_ = 32 // 4.5 -> 70.5
+a = 97 // 2 -> 62.5
+
+
+
+
+
+
+
+
+
+
+
+mikortól: 2017. január 2
+hányHónapra: 2 <= x
+
+SzobátKeres() 
+  return vanKiadóSzoba
+
+//rekurzív: ismersz valakit ismer valakit aki ismer valakit akinek van
+... vanKiadó() { 
+
+
+boolean vanKiadószoba(int nehézségifok);
+if n == 0 //a triviális eset
+  return true; //az optimista megoldás
+return vanKiadószoba(nehézségifok-1); //mindig egy lépéssel közelebb jutunk a megoldáshoz
