@@ -1,3 +1,5 @@
+package összestöbbi;
+
 public class CsaladVezerlo { //written by Lajos (Berényi)
   public static void main(String[] args) {
     Csalad csalad = new Csalad();

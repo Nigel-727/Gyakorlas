@@ -1,3 +1,5 @@
+package összestöbbi;
+
 public class StatikusmetódusOsztálynévlekérdező {
   public static void main(String[] args) {
 //    System.out.println(StatikusmetódusOsztálynévlekérdező.class.getName()); //ez csúnya

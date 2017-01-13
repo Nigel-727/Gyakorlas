@@ -1,3 +1,5 @@
+package összestöbbi;
+
 /**
  * GYAKORLÁS (minden ami "My...") :
  * buborékos + javított_buborékos + gyorsrendezés, többnyiresaját kútfőből

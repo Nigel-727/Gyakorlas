@@ -1,3 +1,5 @@
+package összestöbbi;
+
 /**
  * Határozzuk meg egy tömb(!?) második legkisebb elemét!
  * (vmelyik feladat egyik részfeladata kért vmi hasonlót)

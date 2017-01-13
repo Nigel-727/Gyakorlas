@@ -1,3 +1,5 @@
+package összestöbbi;
+
 
 public class Gyakorlás_20161210Sa {
 

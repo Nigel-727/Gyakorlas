@@ -1,3 +1,5 @@
+package összestöbbi;
+
 /**
 * Néhány gyakran előforduló órai példa saját megvalósítása, 
 * különös tekintettel a "TomprogTetel.java" metódusaira.

@@ -1,3 +1,5 @@
+package összestöbbi;
+
 /**
  *
  * @author Nigel727

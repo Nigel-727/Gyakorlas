@@ -1,3 +1,5 @@
+package összestöbbi;
+
 
 import java.util.ArrayList;
 import java.util.Arrays;
