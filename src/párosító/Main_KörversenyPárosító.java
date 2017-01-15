@@ -14,7 +14,7 @@ import java.util.Set;
 //////////////////////////////
 class Csapat 
         implements Kalapadat_Csapatok {
-  public static int csapatlétszám = 4; //#TODO ne itt legyen (aktuális versenytől függjön, az állítsa be)
+  public  static int csapatlétszám = 4; //#TODO ne itt legyen (aktuális versenytől függjön, az állítsa be)
   private static int nOfInstances = 0; //egyedi példányazonosítóhoz kell
   private static Set<String> felhasználhatóKépzeltNevek = new HashSet<>(Arrays.asList(TEAMNAMEs)); //#iLoveJava
   private static HashSet<String> felhasználtNevek = new HashSet<>(); //FONTOS h minden név egyedi legyen
@@ -22,7 +22,8 @@ class Csapat
   private int id;
   private String név = null; //fontos a kezdeti érvénytelen érték
   private ArrayList<Játékos> tagok = new ArrayList<>(csapatlétszám);
-  boolean véglegesítve = false; //tagok és táblasorrend változhat-e
+  private boolean véglegesítve = false; //tagok és táblasorrend változhat-e
+  //
   private Csapat() { //a konstruktorok ne legyenek public-ok, hogy csak a Csapatverseny.getCsapatInstance() tudja őket meghívni
     this.id=++nOfInstances;
   }
@@ -396,16 +397,6 @@ public class Main_KörversenyPárosító {
     //#TODO Kalapadat_Játékosok-ban megírni a nem-helyes változatot (külön: keresztnevek_férfi, keresztnevek_női)
   }
   public static void main(String[] args) {
-    /*
-//    if (Arrays.asList(FIDEKs).contains((byte)10))
-//      System.out.println("van szorzója");
-    System.out.println(
-//            Arrays.asList(Kalapadat_Játékosok.FIDEKs).get(0).getClass()
-            Arrays.asList(Kalapadat_Játékosok.SEXes).get(0).getClass()
-    );
-    if (Arrays.asList(Kalapadat_Játékosok.SEXes).contains("m")) 
-      System.out.println("van neme");      
- */
     new Main_KörversenyPárosító().fuss();
   }//main()
 }//class
