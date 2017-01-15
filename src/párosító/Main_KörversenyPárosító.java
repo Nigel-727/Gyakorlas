@@ -5,21 +5,23 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
  * @author Nigel-727
  */
 //////////////////////////////
-class Csapat implements Kalapadat_Csapatok {
-  public static int   LÉTSZÁM = 4;
-  public static int   KÉPZELT_CSAPAT = 0;
-  private static int  nOfInstances = 0;
-  private static ArrayList<String> felhasználtNevek = new ArrayList<>();
+class Csapat 
+        implements Kalapadat_Csapatok {
+  public static int csapatlétszám = 4; //#TODO ne itt legyen (aktuális versenytől függjön, az állítsa be)
+  private static int nOfInstances = 0; //egyedi példányazonosítóhoz kell
+  private static Set<String> felhasználhatóKépzeltNevek = new HashSet<>(Arrays.asList(TEAMNAMEs)); //#iLoveJava
+  private static HashSet<String> felhasználtNevek = new HashSet<>(); //FONTOS h minden név egyedi legyen
   //
   private int id;
-  private String név = null;
-  private ArrayList<Játékos> tagok = new ArrayList<>();
+  private String név = null; //fontos a kezdeti érvénytelen érték
+  private ArrayList<Játékos> tagok = new ArrayList<>(csapatlétszám);
   boolean véglegesítve = false; //tagok és táblasorrend változhat-e
   private Csapat() { //a konstruktorok ne legyenek public-ok, hogy csak a Csapatverseny.getCsapatInstance() tudja őket meghívni
     this.id=++nOfInstances;
@@ -28,33 +30,36 @@ class Csapat implements Kalapadat_Csapatok {
     this();
     this.setNév(név); //#TODO vizsgálni hogy sikerült-e
   }
-  public  Csapat(int mitakarsz) {
+  public  Csapat(int mitakarsz) { //#TODO #béna máshogyan kell
     this();
-    if (mitakarsz==KÉPZELT_CSAPAT) 
-      while(!this.setNév(this.getNév())) //#TODO sajnos végtelen ciklusba eshet
-        ;
+    if (mitakarsz==KÉPZELT_CSAPAT) //felesleges vizsgálat, eleve csak akkor jutunk ide amikor int a paraméter
+      this.setNév(this.getNév());
   }
   public boolean  addTag(Játékos újtag) {
-    if (tagok.size()<LÉTSZÁM) {
+    if (tagok.size()<csapatlétszám) {
       tagok.add(újtag); 
       return true;
     }
     return false;
   }
-  public boolean  setNév(String újnév) { //#Lehet-e setter boolean-t visszaadó
-    if (!felhasználtNevek.contains(újnév)) {
-      felhasználtNevek.add(újnév);
-      this.név=újnév;
-      return true;
-    }
-    return false;
+  public void     setNév(String név)  
+          throws IllegalArgumentException { 
+    String kisbetűsNév = név.toLowerCase();
+    if (felhasználtNevek.contains(kisbetűsNév))
+      throw new IllegalArgumentException("ezzel a névvel (\""+név+"\") már van csapat");
+    this.név=név;
+    felhasználtNevek.add(kisbetűsNév);
+    felhasználhatóKépzeltNevek.remove(név); //#TODO kis-nagybetűfüggetlenül kell
   }
-  public String   getNév() {
-    if(this.név!=null)
+  public String   getNév() 
+          throws IllegalArgumentException {
+    if (this.név!=null)
       return this.név;
-    String ezkellneked;
-    ezkellneked = TEAMNAMEs[(int)(Math.random()*TEAMNAMEs.length)];
-    return ezkellneked; 
+//    ezkellneked = TEAMNAMEs[(int)(Math.random()*TEAMNAMEs.length)]; //így volt eredetileg, de egyedi név kell neked
+    if (felhasználhatóKépzeltNevek.isEmpty())
+      throw new IllegalArgumentException("elfogytak a felhasználható képzeltcsapat-nevek");
+    Object[] csapatnevek = felhasználhatóKépzeltNevek.toArray(); //#nemszép #hogykellmáshogy
+    return csapatnevek[(int)(Math.random()*csapatnevek.length)].toString(); 
   }
   public double   getFideÉrtékszámÁtlag() {
     double sum = 0;
@@ -67,7 +72,7 @@ class Csapat implements Kalapadat_Csapatok {
     //#TODO vizsgálni h megvan-e  a létszám
     if (this.véglegesítve) 
       return false; //mivel nem szabad többször
-    this.rendezÉrtékszámszerint();
+    this.rendezÉrtékszámszerint(); //egyelőre csak így lehet a táblasorrendet véglegesíteni
     this.véglegesítve=true;
     return true;
   }
@@ -93,15 +98,15 @@ class Csapat implements Kalapadat_Csapatok {
 }
 //////////////////////////////
 class Játékos implements Kalapadat_Játékosok {
-  public static int KÉPZELT_JÁTÉKOS = 0;
+  
   protected static int nOfInstances = 0;
-  private static ArrayList<String> felhasználtFideIDk = new ArrayList<>(); //#TODO használni!
+  private static HashSet<String> felhasználtFideIDk = new HashSet<>(); //FONTOS h minden fideID egyedi legyen
   //
   protected int     id;
   protected String  fideID = null;
   protected String  név = null;  
   protected short   fideRating = FIDERATING_MIN-1;
-  protected byte    fideK = (byte)(Collections.min(Arrays.asList(FIDEKs))-1);
+  protected byte    fideK = (byte)(Collections.min(Arrays.asList(FIDEKs))-1); //#iLoveJava
   protected short   születésiÉv = SZÜLÉV_MIN-1;
   protected char    nem = HIBÁS_NEM;
   public Játékos() {
@@ -116,7 +121,8 @@ class Játékos implements Kalapadat_Játékosok {
     this.születésiÉv = Short.parseShort(strArr[4]);
     this.nem         = strArr[5].charAt(0);
   }
-  public Játékos(Játékos játékos) { //the "copy constructor" !?
+//  /* //hívva: CsapatJátékos konstruktorában
+  public Játékos(Játékos játékos) { //the "copy constructor"
     this();
     this.fideID=játékos.fideID;
     this.név=játékos.név;
@@ -125,26 +131,50 @@ class Játékos implements Kalapadat_Játékosok {
     this.születésiÉv=játékos.születésiÉv;
     this.nem=játékos.nem;
   }
-  public Játékos(int mitakarsz) {
+//  */
+  public Játékos(int mitakarsz) { //#ezígycsúnya 
     this();
-    if (mitakarsz==KÉPZELT_JÁTÉKOS)
-      this.fideID=this.getFideID();
-      this.név=this.getNév();
-      this.fideRating=this.getFideÉrtékszám();
-      this.fideK=this.getFideSzorzó();
+    if (mitakarsz==KÉPZELT_JÁTÉKOS) {
+//      this.fideID=this.getFideID(); //ez volt eredetileg
+      this.setFideID(this.getFideID()); 
+      //#TODO a maradékhoz is megírni a settert:
       this.születésiÉv=this.getSzületésiÉv();
-      this.nem=this.getNem();
+      this.nem=this.getNem();  //FONTOS a !sorrend! (előbb)
+      this.név=this.getNév(); //FONTOS !sorrend! (utóbb)
+      this.fideRating=this.getFideÉrtékszám();
+      this.fideK=this.getFideSzorzó(); //#TODO értékszámtól+szülévtől is függjön
+    }
+  }
+  public void       setFideID(String újID) 
+          throws IllegalArgumentException {
+    if (felhasználtFideIDk.contains(újID))
+      throw new IllegalArgumentException("ezzel a FIDE azonosítóval (\""+újID+"\") már van játékos");
+    this.fideID=újID;
+    felhasználtFideIDk.add(újID);
   }
   public String     getFideID() {
     if (this.fideID!=null)
       return this.fideID;
     return Long.toString((long)(Math.random()*(FIDEID_MAX-FIDEID_MIN+1)+FIDEID_MIN));
   }
-  public String     getNév() {
-    if(this.név!=null)
+  public String     getNév() 
+          throws IllegalArgumentException {
+    if (this.név!=null)
       return this.név;
+    EnSex mianeme;
+    switch (this.nem) { 
+      case 'm': //#csúnya így beleégetve; #TODO megoldani
+        mianeme = EnSex.male;
+        break;
+      case 'f':
+        mianeme = EnSex.female;
+        break;
+      default: //transzvesztita...?
+        throw new IllegalArgumentException("nem szabadott volna idáig lesüllyedni"); // #hoppá
+    }
+    String[] keresztnevek = (mianeme == EnSex.male ? FIRSTNAMES_MALE : FIRSTNAMES_FEMALE);
     return LASTNAMEs[(int)(Math.random()*LASTNAMEs.length)] + " "
-            + FIRSTNAMEs[(int)(Math.random()*FIRSTNAMEs.length)];
+            + keresztnevek[(int)(Math.random()*keresztnevek.length)];
   }
   public short      getFideÉrtékszám() {
     if(FIDERATING_MIN<=this.fideRating && this.fideRating<=FIDERATING_MAX)
@@ -152,8 +182,10 @@ class Játékos implements Kalapadat_Játékosok {
     return (short)(Math.random()*(FIDERATING_MAX-FIDERATING_MIN+1)+FIDERATING_MIN);
   }
   public byte       getFideSzorzó() {
-    if (Arrays.asList(FIDEKs).contains((Byte)(this.fideK)))
+    if (Arrays.asList(FIDEKs).contains(this.fideK)) {
+//      System.out.println("van szorzója");
       return this.fideK;
+    }
     return FIDEKs[(int)(Math.random()*FIDEKs.length)];
   }
   public short      getSzületésiÉv() {
@@ -162,17 +194,21 @@ class Játékos implements Kalapadat_Játékosok {
     return (short)(Math.random()*(SZÜLÉV_MAX-SZÜLÉV_MIN+1)+SZÜLÉV_MIN);
   }
   public char       getNem() {
-    if (Arrays.asList(SEXes).contains((Character)(this.nem)))
+    if (Arrays.asList(SEXes).contains(Character.toString(this.nem))) { //!!!
+//      System.out.println("van neme");
       return this.nem;
-    return SEXes[(int)(Math.random()*SEXes.length)];
+    }
+//    System.out.println("újnem");
+    return SEXes[(int)(Math.random()*SEXes.length)].charAt(0);
   }
-  public String     toString() {
-    return "|"+extra.Format.right(this.fideID, 8) +", "
-            +this.név+", "
-            +this.fideRating+", "
-            +this.fideK+", "
-            +this.születésiÉv+", "
-            +this.nem+"|";
+  public String     toString() { // #nemámcsakúgynatúr hanem #getterekkel
+    return "|"+extra.Format.right(
+            this.getFideID(), 8)+", "
+            +this.getNév()+", "
+            +this.getFideÉrtékszám()+", "
+            +this.getFideSzorzó()+", "
+            +this.getSzületésiÉv()+", "
+            +this.getNem()+"|";
   }
 }
 //////////////////////////////
@@ -197,7 +233,10 @@ class Csapatverseny {
                     SORTEDBY_RATING = 2;
   public static int ORDER_ASCENDING   = 1,
                     ORDER_DESCENDING  = 2;
-  public static Csapatverseny getCsapatversenyInstance() {
+  private Csapatverseny() {
+    ;
+  }
+  public static Csapatverseny getCsapatversenyInstance() { //#énistudokilyetírni #bibi
     Csapatverseny csv;
     csv = new Csapatverseny();
     return csv;
@@ -275,10 +314,8 @@ class Csapatverseny {
   }
 }
 //////////////////////////////
-public class Fejlesztés_KörversenyPárosító {
-  private Csapatverseny verseny = 
-            Csapatverseny.getCsapatversenyInstance(); //#TODO paraméterben lehetne megadni a csapatlétszámot
-//          new Csapatverseny();
+public class Main_KörversenyPárosító {
+
   private void createParticipants() {
     /*
     Csapat[] gépeltCsapatok = {
@@ -308,13 +345,13 @@ public class Fejlesztés_KörversenyPárosító {
     verseny.addPár(gépeltJátékosok[7], gépeltCsapatok[2]);
     verseny.addPár(gépeltJátékosok[8], gépeltCsapatok[2]);
     */
-    Csapat[] képzeltcsapatok = new Csapat[Kalapadat_Csapatok.TEAMNAMEs.length]; 
+    Csapat[] képzeltcsapatok = new Csapat[Kalapadat_Csapatok.TEAMNAMEs.length]; //most: legyen annyi ahány fiktív név van!
     int[] választhatóMégEnnyiszer = new int[képzeltcsapatok.length];
     for (int i = 0; i < képzeltcsapatok.length; i++) {
       képzeltcsapatok[i] = new Csapat(Csapat.KÉPZELT_CSAPAT); //#TODO nemoké, amikor azonos a nevük
-      választhatóMégEnnyiszer[i] = Csapat.LÉTSZÁM;
+      választhatóMégEnnyiszer[i] = Csapat.csapatlétszám;
     }
-    Játékos[] képzeltjátékosok = new Játékos[képzeltcsapatok.length*Csapat.LÉTSZÁM];
+    Játékos[] képzeltjátékosok = new Játékos[képzeltcsapatok.length*Csapat.csapatlétszám];
     boolean[] választható = new boolean[képzeltjátékosok.length];
     for (int i = 0; i < képzeltjátékosok.length; i++) {
        képzeltjátékosok[i] =  new Játékos(Játékos.KÉPZELT_JÁTÉKOS); //#TODO nemoké, amikor azonos a FideID-jük (ritka eset)
@@ -348,15 +385,27 @@ public class Fejlesztés_KörversenyPárosító {
     verseny.listJátékosok("értékszám szerint csökkenő", Csapatverseny.SORTEDBY_RATING, Csapatverseny.ORDER_DESCENDING);    
     //
   }
+  private Csapatverseny verseny = 
+//          new Csapatverseny(); //#hibás #nemfutle #nincsneki #hihi #egyke
+            Csapatverseny.getCsapatversenyInstance(); //#TODO paraméterben lehetne megadni a csapatlétszámot
   private void fuss() {
-    createParticipants();
-    verseny.véglegesítCsapatok();
-    showParticipants();
+    createParticipants(); //#TODO createParticipants(verseny); 
+    verseny.véglegesítCsapatok(); 
+    showParticipants(); //#TODO showParticipants(verseny);
     
     //#TODO Kalapadat_Játékosok-ban megírni a nem-helyes változatot (külön: keresztnevek_férfi, keresztnevek_női)
-    //#TODO Kijavítani a Csapatra h ne eshessen végtelen ciklusba ha nincs több felhasználható képzeltnév
   }
   public static void main(String[] args) {
-    new Fejlesztés_KörversenyPárosító().fuss();
+    /*
+//    if (Arrays.asList(FIDEKs).contains((byte)10))
+//      System.out.println("van szorzója");
+    System.out.println(
+//            Arrays.asList(Kalapadat_Játékosok.FIDEKs).get(0).getClass()
+            Arrays.asList(Kalapadat_Játékosok.SEXes).get(0).getClass()
+    );
+    if (Arrays.asList(Kalapadat_Játékosok.SEXes).contains("m")) 
+      System.out.println("van neme");      
+ */
+    new Main_KörversenyPárosító().fuss();
   }//main()
 }//class
