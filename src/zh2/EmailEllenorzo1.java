@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 /*
 35) "EmailEllenorzo1.java" (max 15p)
-írjon prg-t amelynek emailEllenőrző() metódusa csak az extra.Console.readLine() fv-t
+Írjon prg-t amelynek emailEllenőrző() metódusa csak az extra.Console.readLine() fv-t
 felhasználva olvasson be egy emailcímnek szánt szöveget!
 A metódus akkr fogadja el a beolvasott szöveget emailcímként ha a szövegben:
  -van @ és . egymás után ebben a sorrendben
@@ -12,7 +12,7 @@ A metódus akkr fogadja el a beolvasott szöveget emailcímként ha a szövegben
  -a @ és a . között elfoagdható: freemail, gmail, hotmail, mail
  -a . utáni rész lehet com, hu, edu, net
 A metódus csak true értékkel térhet vissza, (a program!?) addig kérje újra az emailcímeket, amíg az nem elfogadható!
-A program tartalmazzon kivételkezelést, a metódus dobjon kivételt ha bármi probléma adódik és kezelje is azt
+A program tartalmazzon kivételkezelést, a metódus dobjon kivételt ha bármi probléma adódik és kezelje is azt!
 */
 
 /**
