@@ -13,12 +13,14 @@ class ŐsEmber {
 }
 class ModernEmber extends ŐsEmber {
   private String név;
-  private static int emberSzám = 1;
-  public ModernEmber(String név) {this.név=név;}
+  private int életkor;
+  private static int emberSzám = 1; //#todo emberSzám-ba venni;
+  public ModernEmber(String név, int életkor) {this.név=név; this.életkor=életkor;}
   public String getNév() {return this.név;}
   public void setNév(String név) {this.név=név;}
   public static void kiírModernEmber(ModernEmber me) {
-    System.out.println(me.getNév());
+    System.out.print(me.getNév());
+    System.out.println("; "+me.életkor); //#nemszép
 //    System.out.println("Őstől örökölt a tűz? "+(me.TŰZ?"igen":"nem"));
   }
 }
@@ -27,7 +29,7 @@ public class Main {
   public static void main(String[] args) {
     System.out.println("ModernEmber típus változóinak, metódusainak, "
             + "konstruktorának elérése reflexióval\n");
-    ModernEmber meEgyik = new ModernEmber("Bármi Áron");
+    ModernEmber meEgyik = new ModernEmber("Bármi Áron", 22);
     //(1) Hozzáférés privát példány mező értékéhez:
 //    System.out.println(me.név); //nem fordul le #megszép #eznemkérdés
     try { // reflexiót try-jal körbevenni márpedig #muszáj
@@ -112,11 +114,11 @@ public class Main {
     ModernEmber meMásik;
     try {
       Constructor<ModernEmber> konstruktor = 
-              ModernEmber.class.getDeclaredConstructor(String.class);
-      meMásik = konstruktor.newInstance("Nyúl Béla");
+              ModernEmber.class.getDeclaredConstructor(String.class, int.class);
+      meMásik = konstruktor.newInstance("Nyúl Béla", 33);
       System.out.print("Hozzáférek ahhoz is amihez "
               + "egyébként is hozzáférnék "
-              + "(publikus konstruktor ModernEmber(String)): ");
+              + "(publikus konstruktor ModernEmber(String, int)): ");
       ModernEmber.kiírModernEmber(meMásik);
     } catch (Exception e) {
       e.printStackTrace();
