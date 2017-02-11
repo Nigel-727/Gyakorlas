@@ -41,8 +41,8 @@ public class Ablak
 //    btVégrehajt.addActionListener(this);
 //    btTöröl.addActionListener(this);
     dbToTable();
-    tblTeszt();
-    tableToXML();    
+//    tblTeszt();
+    tableToXMLfile();    
   }//public Ablak()
   
   private void dbToTable() {
@@ -50,12 +50,12 @@ public class Ablak
             Modell.getTáblázat(
                     Adatbaziskapcsolat.MINDENKIMBERLEY));
   }
-  private void tableToXML() {
+  private void tableToXMLfile() {
     Modell.writeToXML(
             tblEredmény.getModel(), 
             Adatbaziskapcsolat.XMLFÁJL);
   }
-  private void tblTeszt() {
+  private void tblTeszt() { // csak #teszt
     TableModel tm =       tblEredmény.getModel();
     
     String név = tm.getValueAt(3, 1).toString();

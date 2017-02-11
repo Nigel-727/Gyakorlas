@@ -66,22 +66,25 @@ public class Modell implements Adatbaziskapcsolat {
       Document xml=DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
       Element mindenki=xml.createElement("mindenki");
       xml.appendChild(mindenki);      
-      Element részlegnév_lista=xml.createElement(cols[0]+"_lista"); //"Részlegnév_lista"
+      Element részlegnév_lista=xml.createElement(cols[0]+"-lista"); //"Részlegnév_lista"
       mindenki.appendChild(részlegnév_lista);
       //eddig OK.
       int sorIndex=0; 
-      final int sorDb=tm.getRowCount()-1; // #todo
+      final int sorDb=tm.getRowCount(); // #todo
       while (sorIndex<sorDb) {
         Element részlegnév = xml.createElement(cols[0]);
-        String aktRészlegNév = tm.getValueAt(sorIndex, 0).toString();        
-        részlegnév.setAttribute("value", aktRészlegNév);
+        Object obj;
+        String előzőRészlegnév = (obj=tm.getValueAt(sorIndex, 0))!=null?obj.toString():"";        
+        részlegnév.setAttribute("value", előzőRészlegnév);
         //
-        Element dolgozónév_lista=xml.createElement(cols[1]+"_lista"); //"Dolgozónév_lista"
+        Element dolgozónév_lista=xml.createElement(cols[1]+"-lista"); //"Dolgozónév_lista"
         részlegnév.appendChild(dolgozónév_lista);
         //
         while (sorIndex<sorDb 
-                && aktRészlegNév.equals(
-                        tm.getValueAt(sorIndex, 0).toString())) { //míg uaz a részleg;
+                && előzőRészlegnév.equals(
+                        (obj=tm.getValueAt(sorIndex, 0))!=null?obj.toString():""
+//                        tm.getValueAt(sorIndex, 0).toString() //kivételt dobott amikor a cellában _null_ érték volt
+        )) { //míg uaz a részleg;
           Element dolgozó = xml.createElement(cols[1]);
           String aktDolgozónév = tm.getValueAt(sorIndex, 1).toString();        
           dolgozó.setAttribute("value", aktDolgozónév);
@@ -96,13 +99,10 @@ public class Modell implements Adatbaziskapcsolat {
           dolgozó.appendChild(fizetés);
           dolgozónév_lista.appendChild(dolgozó);  
           sorIndex++;
-          System.out.println("sorIndex="+sorIndex);
+//          System.out.println("sorIndex="+sorIndex); // csak #teszt
         }
         részlegnév_lista.appendChild(részlegnév);
       }
-      
-      
-      
       DOMSource honnan=new DOMSource(xml);
       StreamResult hová=new StreamResult(XMLFÁJL);
       TransformerFactory.newInstance().newTransformer().transform(honnan, hová);
@@ -115,7 +115,7 @@ public class Modell implements Adatbaziskapcsolat {
     }
   }  
   
-  public static void writeToXML2(TableModel tm, File fájl) {
+  public static void writeToXML2(TableModel tm, File fájl) { // csak #teszt
     try {
       Document xml=DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
       Element gyökér=xml.createElement("MindenKimberely");
