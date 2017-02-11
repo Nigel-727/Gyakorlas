@@ -59,6 +59,64 @@ public class Modell implements Adatbaziskapcsolat {
   
   public static void writeToXML(TableModel tm, File fájl) {
     try {
+      String[] cols = new String[tm.getColumnCount()];
+      for (int i = 0; i < cols.length; i++) 
+        cols[i] = tm.getColumnName(i);
+      //
+      Document xml=DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+      Element mindenki=xml.createElement("mindenki");
+      xml.appendChild(mindenki);      
+      Element részlegnév_lista=xml.createElement(cols[0]+"_lista"); //"Részlegnév_lista"
+      mindenki.appendChild(részlegnév_lista);
+      //eddig OK.
+      int sorIndex=0; 
+      final int sorDb=tm.getRowCount()-1; // #todo
+      while (sorIndex<sorDb) {
+        Element részlegnév = xml.createElement(cols[0]);
+        String aktRészlegNév = tm.getValueAt(sorIndex, 0).toString();        
+        részlegnév.setAttribute("value", aktRészlegNév);
+        //
+        Element dolgozónév_lista=xml.createElement(cols[1]+"_lista"); //"Dolgozónév_lista"
+        részlegnév.appendChild(dolgozónév_lista);
+        //
+        while (sorIndex<sorDb 
+                && aktRészlegNév.equals(
+                        tm.getValueAt(sorIndex, 0).toString())) { //míg uaz a részleg;
+          Element dolgozó = xml.createElement(cols[1]);
+          String aktDolgozónév = tm.getValueAt(sorIndex, 1).toString();        
+          dolgozó.setAttribute("value", aktDolgozónév);
+          Element beosztás = xml.createElement(cols[2]);
+          beosztás.appendChild(xml.createTextNode(tm.getValueAt(sorIndex, 2).toString()));
+          dolgozó.appendChild(beosztás);
+          Element belépés_dátuma = xml.createElement(cols[3]);
+          belépés_dátuma.appendChild(xml.createTextNode(tm.getValueAt(sorIndex, 3).toString()));
+          dolgozó.appendChild(belépés_dátuma);
+          Element fizetés = xml.createElement(cols[4]);
+          fizetés.appendChild(xml.createTextNode(tm.getValueAt(sorIndex, 4).toString()));
+          dolgozó.appendChild(fizetés);
+          dolgozónév_lista.appendChild(dolgozó);  
+          sorIndex++;
+          System.out.println("sorIndex="+sorIndex);
+        }
+        részlegnév_lista.appendChild(részlegnév);
+      }
+      
+      
+      
+      DOMSource honnan=new DOMSource(xml);
+      StreamResult hová=new StreamResult(XMLFÁJL);
+      TransformerFactory.newInstance().newTransformer().transform(honnan, hová);
+    }
+    catch (ParserConfigurationException e) {
+      e.printStackTrace();
+    }
+    catch (TransformerException e) {
+      e.printStackTrace();
+    }
+  }  
+  
+  public static void writeToXML2(TableModel tm, File fájl) {
+    try {
       Document xml=DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
       Element gyökér=xml.createElement("MindenKimberely");
       xml.appendChild(gyökér);
@@ -103,5 +161,5 @@ public class Modell implements Adatbaziskapcsolat {
     catch (TransformerException e) {
       e.printStackTrace();
     }
-  }//writeToXML()
+  }//writeToXML2()
 }

@@ -67,5 +67,13 @@ public class Ablak
       tm.getValueAt(3, 3)+", "+
       név.split(",")[0].trim()+" "+név.split(",")[1].trim()
     );
-  }
+    String[] oszlopnevek = new String[tm.getColumnCount()];
+    for (int i = 0; i < oszlopnevek.length; i++) {
+      oszlopnevek[i] = tm.getColumnName(i);
+      System.out.print("\""+oszlopnevek[i]+"\" ");
+    }
+    System.out.println();
+      
+    
+  }//tblTeszt()
 }

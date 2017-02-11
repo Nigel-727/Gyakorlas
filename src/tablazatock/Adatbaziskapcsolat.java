@@ -21,11 +21,11 @@ public interface Adatbaziskapcsolat {
   String MINDENKIMBERLEY=
     "SELECT DEPARTMENT_NAME AS \"Részlegnév\", upper(LAST_NAME) || ', ' "
     +"|| FIRST_NAME AS \"Dolgozónév\", JOBS.JOB_TITLE as \"Beosztás\", "
-    +"E.HIRE_DATE as \"Belépés dátuma\", E.SALARY as \"Fizetés\"\n" 
+    +"E.HIRE_DATE as \"Belépés_dátuma\", E.SALARY as \"Fizetés\"\n" 
     +"FROM JOBS,\n"
     +"EMPLOYEES E LEFT JOIN DEPARTMENTS D ON D.DEPARTMENT_ID = E.DEPARTMENT_ID\n" 
     +"WHERE JOBS.JOB_ID = E.JOB_ID\n"
     +"ORDER BY \"Részlegnév\", \"Dolgozónév\"";  
   //
-  File XMLFÁJL=new File("./src/tablazatock/mindenKimberely.XML");
+  File XMLFÁJL=new File("./src/tablazatock/mindenki.XML");
 }

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+
+<mindenki>
+  <Részlegnév_lista>
+    <Részlegnév value="Accounting">
+      <Dolgozónév_lista>
+        <Dolgozónév value="GIETZ, William">
+          <Beosztás>Public Accountant</Beosztás>
+          <Belépés_dátuma>1994-06-07</Belépés_dátuma>
+          <Fizetés>8300</Fizetés>
+        </Dolgozónév>
+        <Dolgozónév value="HIGGINS, Shelley">
+          <Beosztás>Accounting Manager</Beosztás>
+          <Belépés_dátuma>1994-06-07</Belépés_dátuma>
+          <Fizetés>12000</Fizetés>
+        </Dolgozónév>        
+      </Dolgozónév_lista>
+    </Részlegnév>
+    <Részlegnév value="Administration>
+      <Dolgozónév_lista>
+        <Dolgozónév value="WHALEN, Jennifer">
+          <Beosztás>Administration Assistant</Beosztás>
+          <Belépés_dátuma>1987-09-17</Belépés_dátuma>
+          <Fizetés>4400</Fizetés>
+        </Dolgozónév>
+      </Dolgozónév_lista>
+    </Részlegnév>
+    <Részlegnév value="Executive">
+      <Dolgozónév_lista>
+        <Dolgozónév value="DE HAAN, Lex">
+          <Beosztás>Administration Vice President</Beosztás>
+          <Belépés_dátuma>1993-01-13</Belépés_dátuma>
+          <Fizetés>17000</Fizetés>
+        </Dolgozónév>
+        <Dolgozónév value="KING, Steven">
+          <Beosztás>President</Beosztás>
+          <Belépés_dátuma>1987-06-17</Belépés_dátuma>
+          <Fizetés>24000</Fizetés>
+        </Dolgozónév>    
+        <Dolgozónév value="KOCHHAR, Neena">
+          <Beosztás>Administration Vice President</Beosztás>
+          <Belépés_dátuma>1989-09-21</Belépés_dátuma>
+          <Fizetés>17000</Fizetés>
+        </Dolgozónév>      
+      </Dolgozónév_lista>
+    </Részlegnév>
+  </Részlegnév_lista>
+</mindenki>
