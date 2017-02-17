@@ -6,6 +6,7 @@
 package tablazatock;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -23,6 +24,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -57,7 +59,7 @@ public class Modell implements Adatbaziskapcsolat {
     return dtm;
   }
   
-  public static void writeToXML(TableModel tm, File fájl) {
+  public static void tableToXML(TableModel tm, File fájl) {
     try {
       String[] cols = new String[tm.getColumnCount()];
       for (int i = 0; i < cols.length; i++) 
@@ -115,7 +117,7 @@ public class Modell implements Adatbaziskapcsolat {
     }
   }  
   
-  public static void writeToXML2(TableModel tm, File fájl) { // csak #teszt
+  public static void tableToXML2(TableModel tm, File fájl) { // csak #teszt
     try {
       Document xml=DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
       Element gyökér=xml.createElement("MindenKimberely");
@@ -162,4 +164,43 @@ public class Modell implements Adatbaziskapcsolat {
       e.printStackTrace();
     }
   }//writeToXML2()
+  
+  public static DefaultTableModel xmlToTable(File fájl) {
+    /*
+    try {
+      DocumentBuilder parser = 
+        DocumentBuilderFactory.newInstance().newDocumentBuilder();
+      Document doc = parser.parse(fájl);
+//      NodeList nodes = doc.getElementsByTagNameNS( "*", "*" );
+      NodeList nodes = doc.getElementsByTagName( "Részlegnév-lista" );
+      for( int i = 0; i < nodes.getLength(); i++ ){
+          Node node = nodes.item( i );
+          System.out.println( node.getNodeType() + " " + node.getNodeName() );
+          NamedNodeMap map = node.getAttributes();
+          System.out.println("attribútum=\""+map+"\"");
+//          String text = node.getTextContent();
+//          System.out.println("érték="+text);
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    */
+    //  
+    DefaultTableModel dtm=new DefaultTableModel();
+///*    
+    Document xml=null;
+    try {
+			xml=DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fájl); //eloforditas?
+		}
+    catch(ParserConfigurationException | SAXException | IOException e) {
+			e.printStackTrace();
+		}
+    //
+    
+    dtm.setColumnIdentifiers(OSZLOPOK);
+    
+    //
+//*/
+    return dtm; 
+  }
 }

@@ -18,15 +18,15 @@ import javax.swing.table.TableModel;
  *
  * @author Nigel-727
  */
-public class Ablak 
-        extends JFrame 
+public class AblakSima 
+        extends JFrame implements Adatbaziskapcsolat
 {
 //  private JTextField tfSQL=new JTextField("SELECT * FROM EMPLOYEES", 50);
 //  private JButton btVégrehajt=new JButton("Végrehajt");
 //  private JButton btTöröl=new JButton("Töröl");
   private JTable tblEredmény=new JTable();
   
-  public Ablak() {
+  public AblakSima() {
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setTitle("(teszt) adatbázis->JTable, JTable->XML");
     setSize(800, 400);
@@ -43,7 +43,7 @@ public class Ablak
     dbToTable();
 //    tblTeszt();
     tableToXMLfile();    
-  }//public Ablak()
+  }//public AblakSima()
   
   private void dbToTable() {
     tblEredmény.setModel(
@@ -51,7 +51,7 @@ public class Ablak
                     Adatbaziskapcsolat.MINDENKIMBERLEY));
   }
   private void tableToXMLfile() {
-    Modell.writeToXML(
+    Modell.tableToXML(
             tblEredmény.getModel(), 
             Adatbaziskapcsolat.XMLFÁJL);
   }

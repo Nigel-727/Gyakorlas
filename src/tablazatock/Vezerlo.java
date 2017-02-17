@@ -11,7 +11,7 @@ package tablazatock;
  */
 public class Vezerlo {
   public static void main(String[] args) {
-//    new Nezet().setVisible(true);
-    new Ablak().setVisible(true);
+//    new AblakSima().setVisible(true); //Oracle -> JTable -> XML
+    new AblakVarazsolt().setVisible(true); //XML -> JTable (-> Oracle)
   }
 }
